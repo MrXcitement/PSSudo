@@ -70,6 +70,7 @@
     if($emuHk) {
         $psi.UseShellExecute = $false
         $psi.Arguments = "-new_console:a $cmdLine";
+        $psi.WorkingDirectory = $(Get-Location)
     }
     else {
         $psi.Verb = "runas"

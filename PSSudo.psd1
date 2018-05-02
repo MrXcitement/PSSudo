@@ -1,6 +1,6 @@
 ﻿@{
 RootModule = 'PSSudo.psm1'
-ModuleVersion = '1.4.1'
+ModuleVersion = '1.4.2'
 GUID = '75640361-a312-4e57-8564-9c8b904d333b'
 Author = 'Eduardo Sousa'
 Description = 'Function for executing programs with adminstrative privileges'
