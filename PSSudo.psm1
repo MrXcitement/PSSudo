@@ -1,18 +1,8 @@
 ﻿function Start-Elevated {
-    $psi = new-object System.Diagnostics.ProcessStartInfo
-
-    $emuHk = $env:ConEmuHooks -eq 'Enabled'
 
     if($args.Length -eq 0) {
-        if($emuHk) {
-            $psi.FileName = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
-            $psi.Arguments = "-new_console:a -ExecutionPolicy $(Get-ExecutionPolicy) -NoLogo"
-            $psi.UseShellExecute = $false
-        }
-        else {
-            Write-Warning "You must provide a program to be executed with its command line arguments."
-            return
-        }
+        $program = [System.Diagnostics.Process]::GetCurrentProcess().MainModule.FileName
+        $cmdLine = "-ExecutionPolicy $(Get-ExecutionPolicy) -NoLogo"
     }
     else {
         if($args.Length -ne 1) {
@@ -71,17 +61,18 @@
                 return
             }
         }
+    }
 
-        if($emuHk) {
-            $psi.UseShellExecute = $false
-            $cmdLine = "-new_console:a $cmdLine";
-        }
-        else {
-            $psi.Verb = "runas"
-        }
+    $psi = new-object System.Diagnostics.ProcessStartInfo
+    $psi.FileName = $program
 
-
-        $psi.FileName = $program
+    $emuHk = $env:ConEmuHooks -eq 'Enabled'
+    if($emuHk) {
+        $psi.UseShellExecute = $false
+        $psi.Arguments = "-new_console:a $cmdLine";
+    }
+    else {
+        $psi.Verb = "runas"
         $psi.Arguments = $cmdLine
     }
 
